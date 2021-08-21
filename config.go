@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
-	"strconv"
+	"strings"
 )
 
 type Color string
@@ -23,6 +23,15 @@ type Config struct {
 	zabbixPort string
 	httpPort   string
 }
+type Params struct {
+	name        string
+	description string
+	predefined  string
+}
+
+func (p *Params) envNotation() string {
+	return strings.ReplaceAll(strings.ToUpper(p.name), "-", "_")
+}
 
 const (
 	ColorBlack  Color = "\u001b[30m"
@@ -34,16 +43,33 @@ const (
 )
 
 func getConfig() *Config {
-	serverEnv := os.Getenv("SERVER")
-	zabbixPortEnv := os.Getenv("ZABBIX_PORT")
-	httpPortEnv := os.Getenv("HTTP_PORT")
-	serverFlag := flag.String("server", "127.0.0.1", "set zabbix server address, default 127.0.0.1")
-	zabbixPortFlag := flag.Int("zabbix-port", 10051, "set zabbix server port, default 10051")
-	httpPortFlag := flag.Int("http-port", 8080, "http server port, default 8080")
+	params := []Params{
+		{
+			name:        "zabbix-server",
+			description: "set zabbix server address, default 127.0.0.1",
+			predefined:  "127.0.0.1",
+		},
+		{
+			name:        "zabbix-port",
+			description: "set zabbix server port, default 10051",
+			predefined:  "10051",
+		},
+		{
+			name:        "http-port",
+			description: "http server port, default 8080",
+			predefined:  "8080",
+		},
+	}
+	filledParams := make(map[string]*string, len(params))
+	for _, param := range params {
+		filledParams[param.name] = flag.String(param.name, envOrDefault(param.envNotation(), param.predefined), param.description)
+	}
 	flag.Parse()
-	config := &Config{serverAddr: getPriorityFilled(serverEnv, *serverFlag),
-		zabbixPort: getPriorityFilled(zabbixPortEnv, strconv.Itoa(*zabbixPortFlag)),
-		httpPort:   getPriorityFilled(httpPortEnv, strconv.Itoa(*httpPortFlag))}
+	config := &Config{
+		serverAddr: *filledParams["zabbix-server"],
+		zabbixPort: *filledParams["zabbix-port"],
+		httpPort:   *filledParams["http-port"],
+	}
 	announceConfig(config)
 	return config
 }
@@ -52,10 +78,10 @@ func announceConfig(cfg *Config) {
 	colorize(ColorYellow, fmt.Sprintf("http server port: %v", cfg.httpPort))
 }
 
-func getPriorityFilled(one, two string) string {
-	if len(one) == 0 {
-		return two
-	} else {
-		return one
+func envOrDefault(env, predefined string) string {
+	if val, exist := os.LookupEnv(env); exist {
+		return val
 	}
+	return predefined
 }
+
