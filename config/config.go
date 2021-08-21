@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"flag"
@@ -19,9 +19,9 @@ func colorize(color Color, message string) {
 }
 
 type Config struct {
-	serverAddr string
-	zabbixPort string
-	httpPort   string
+	ServerAddr string
+	ZabbixPort string
+	HttpPort   string
 }
 type Params struct {
 	name        string
@@ -42,7 +42,7 @@ const (
 	ColorReset        = "\u001b[0m"
 )
 
-func getConfig() *Config {
+func GetConfig() *Config {
 	params := []Params{
 		{
 			name:        "zabbix-server",
@@ -66,16 +66,16 @@ func getConfig() *Config {
 	}
 	flag.Parse()
 	config := &Config{
-		serverAddr: *filledParams["zabbix-server"],
-		zabbixPort: *filledParams["zabbix-port"],
-		httpPort:   *filledParams["http-port"],
+		ServerAddr: *filledParams["zabbix-server"],
+		ZabbixPort: *filledParams["zabbix-port"],
+		HttpPort:   *filledParams["http-port"],
 	}
 	announceConfig(config)
 	return config
 }
 func announceConfig(cfg *Config) {
-	colorize(ColorYellow, fmt.Sprintf("zabbix server addr: %v:%v", cfg.serverAddr, cfg.zabbixPort))
-	colorize(ColorYellow, fmt.Sprintf("http server port: %v", cfg.httpPort))
+	colorize(ColorYellow, fmt.Sprintf("zabbix server addr: %v:%v", cfg.ServerAddr, cfg.ZabbixPort))
+	colorize(ColorYellow, fmt.Sprintf("http server port: %v", cfg.HttpPort))
 }
 
 func envOrDefault(env, predefined string) string {

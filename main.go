@@ -1,7 +1,7 @@
 package main
 
-
+import "zabbix-http/config"
 
 func main() {
-	RunServer(getConfig())
+	RunServer(config.GetConfig())
 }
