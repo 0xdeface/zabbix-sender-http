@@ -8,8 +8,8 @@ zabbix-sender-http does not depend on the zabbix_sender tool and fully implement
 **Zabbix-sender-http** - Инструмент для приема событий по http и отправки этих событий в zabbix. 
 
 ### (builds) готовые сборки
-![windows_x64_build](dist/zabbix-http.exe)
-![linux_build](dist/zabbix-http)
+[windows_x64_build](dist/zabbix-http.exe)
+[linux_build](dist/zabbix-http)
 
 
 Проверен и совместим с zabbix v5.4    
