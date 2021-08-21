@@ -9,6 +9,7 @@ zabbix-sender-http does not depend on the zabbix_sender tool and fully implement
 
 ### (builds) готовые сборки
 [windows_x64_build](dist/zabbix-http.exe)
+
 [linux_build](dist/zabbix-http)
 
 
@@ -29,11 +30,12 @@ To send data you should make http Get request with these query parameters: ["ser
 Таблица ниже отображает доступные параметры запуска и их приоритеты. 
 The table bellow shows possible launch parameters and their priority. 
 
-| Highest priority       | Middle priority     | Lowest priority   | Description               |   |
-|------------------------|---------------------|-------------------|---------------------------|---|
-| **Command parameters** | **Env variables**   | **Predefined values** |                       |   |
-| zabbix-server          | ZABBIX_SERVER       | 127.0.0.1         | set zabbix server address |   |
-| zabbix-port            | ZABBIX_PORT         | 10051             | set zabbix server port    |   |
-| http-port              | HTTP_PORT           | 8080              | http server port          |   |
+| Highest priority       | Middle priority     | Lowest priority   | Description               | 
+|------------------------|---------------------|-------------------|---------------------------|
+| **Command parameters** | **Env variables**   | **Predefined values** |                       |   
+| zabbix-server          | ZABBIX_SERVER       | 127.0.0.1         | set zabbix server address |   
+| zabbix-port            | ZABBIX_PORT         | 10051             | set zabbix server port    |   
+| http-port              | HTTP_PORT           | 8080              | http server port          |   
+
      
 
