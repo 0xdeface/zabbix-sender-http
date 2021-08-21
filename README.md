@@ -1,6 +1,9 @@
 # zabbix-sender-http
 Tool for receive events over http and pass to zabbix. zabbix-sender over http.
 
+[![build](https://github.com/0xdeface/zabbix-sender-http/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/0xdeface/zabbix-sender-http/actions/workflows/build.yml)
+![release](https://img.shields.io/github/v/release/0xdeface/zabbix-sender-http.svg)
+
 **Zabbix-sender-http** - Инструмент для приема событий по http и отправки этих событий в zabbix. 
 
 В папке [dist](dist) находятся скомпилированные сборки для Windows(x64) и Linux.
