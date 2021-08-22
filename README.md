@@ -7,7 +7,7 @@ zabbix-sender-http does not depend on the zabbix_sender tool and fully implement
 
 **Zabbix-sender-http** - Инструмент для приема событий по http и отправки этих событий в zabbix. 
 
-### (builds) готовые сборки
+### (builds) Готовые сборки
 [windows_x64_build](dist/zabbix-http.exe)
 
 [linux_build](dist/zabbix-http)
@@ -37,5 +37,7 @@ The table bellow shows possible launch parameters and their priority.
 | zabbix-port            | ZABBIX_PORT         | 10051             | set zabbix server port    |   
 | http-port              | HTTP_PORT           | 8080              | http server port          |   
 
-     
+### Прием данных в zabbix
+Просто создайте элемент данных с типом zabbix trapper. Трапперы используются для приема данных которые пушатся из вне,
+а не собираются самим zabbix'ом.    
 
