@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"zabbix-http/internal/domain"
 )
 
 type Color string
@@ -42,7 +43,7 @@ const (
 	ColorReset        = "\u001b[0m"
 )
 
-func GetConfig() *Config {
+func GetConfig(logger domain.Logger) *Config {
 	params := []Params{
 		{
 			name:        "zabbix-server",
