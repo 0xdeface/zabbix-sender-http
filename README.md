@@ -25,6 +25,16 @@ To send data you should make http Get request with these query parameters: ["ser
 ```bash
     curl localhost:8080?server=HOST_NAME&key=ITEM&value=MYVAL
 ```
+##### Пример запуска docker контейнера
+```bash
+    docker run --name zabbix-sender-http -d \
+    -p 3001:8080 \
+    -e ZABBIX_SERVER="zabbix-server-pgsql" \
+    --restart always \
+    --network postgres_network \
+    ghcr.io/0xdeface/zabbix-sender:latest
+```
+
 ### (launch parameters) Параметры запуска
 
 Таблица ниже отображает доступные параметры запуска и их приоритеты. 
