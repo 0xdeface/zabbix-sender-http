@@ -25,7 +25,7 @@ func handler(zabbixSender domain.ZabbixSenderPort, logger domain.Logger) {
 		for _, val := range required {
 			if _, ok := q[val]; !ok {
 				logger.Log(domain.INFO, fmt.Sprintf("request with empty parameter %v", val))
-				fmt.Fprintf(writer, "%v: shouldn t be empty", val)
+				fmt.Fprintf(writer, "%v: shouldn t be empty \n", val)
 				return
 			}
 		}
