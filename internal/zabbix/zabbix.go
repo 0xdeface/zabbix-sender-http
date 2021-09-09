@@ -61,6 +61,9 @@ func (zp *Packet) Prepare() []byte {
 	buf = append(buf, serialized...)
 	return buf
 }
-func (zp *Packet) ResponseDecode(response []byte) []byte  {
+func (zp *Packet) ResponseDecode(response []byte) []byte {
+	if len(response) <= HeaderLength+DataLength {
+		return response
+	}
 	return response[HeaderLength+DataLength:]
 }
