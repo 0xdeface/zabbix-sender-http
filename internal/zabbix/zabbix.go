@@ -3,6 +3,7 @@ package zabbix
 import (
 	"encoding/binary"
 	"encoding/json"
+	"log"
 	"time"
 )
 
@@ -63,6 +64,7 @@ func (zp *Packet) Prepare() []byte {
 }
 func (zp *Packet) ResponseDecode(response []byte) []byte {
 	if len(response) <= HeaderLength+DataLength {
+		log.Printf("%v", response)
 		return response
 	}
 	return response[HeaderLength+DataLength:]
