@@ -74,6 +74,7 @@ func GetConfig(logger domain.Logger) *Config {
 	announceConfig(config)
 	return config
 }
+
 func announceConfig(cfg *Config) {
 	colorize(ColorYellow, fmt.Sprintf("zabbix server addr: %v:%v", cfg.ServerAddr, cfg.ZabbixPort))
 	colorize(ColorYellow, fmt.Sprintf("http server port: %v", cfg.HttpPort))

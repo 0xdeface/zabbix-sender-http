@@ -1,17 +1,14 @@
 package domain
 
-//out port
 type ZabbixSenderPort interface {
 	SendToZabbix(server, key, value string) ([]byte, error)
 }
 
-// in port
 type ConnectionPort interface {
 	Send([]byte) ([]byte, error)
 	Close() error
 }
 
-//in port
 type ZabbixPort interface {
 	AddMessage(host, key, value string)
 	Prepare() []byte

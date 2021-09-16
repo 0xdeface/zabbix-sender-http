@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"log"
+	"sync"
 	"time"
 )
 
@@ -19,6 +20,7 @@ type Message struct {
 }
 
 type Packet struct {
+	mu      sync.Mutex
 	Request string    `json:"request"`
 	Data    []Message `json:"data"`
 	Clock   int64     `json:"clock"`
@@ -60,6 +62,9 @@ func (zp *Packet) Prepare() []byte {
 	binary.LittleEndian.PutUint32(dataLen, uint32(len(serialized)))
 	buf := append(header, dataLen...)
 	buf = append(buf, serialized...)
+	zp.mu.Lock()
+	zp.Data = make([]Message, 0)
+	zp.mu.Unlock()
 	return buf
 }
 func (zp *Packet) ResponseDecode(response []byte) []byte {
