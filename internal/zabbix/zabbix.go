@@ -50,11 +50,13 @@ func NewPacketWithMessage(host, key, value string, clock ...int64) *Packet {
 }
 
 func (zp *Packet) AddMessage(host, key, value string) {
+	zp.mu.Lock()
 	zp.Data = append(zp.Data, Message{
 		Host:  host,
 		Key:   key,
 		Value: value,
 	})
+	zp.mu.Unlock()
 }
 func (zp *Packet) Prepare() []byte {
 	serialized, _ := json.Marshal(zp)

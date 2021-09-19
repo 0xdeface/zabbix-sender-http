@@ -25,7 +25,7 @@ To send data you should make http Get request with these query parameters: ["ser
 ```bash
     curl localhost:8080?server=HOST_NAME&key=ITEM&value=MYVAL
 ```
-##### Пример запуска docker контейнера
+##### (example run on docker) Пример запуска docker контейнера
 ```bash
     docker run --name zabbix-sender-http -d \
     -p 3001:8080 \
