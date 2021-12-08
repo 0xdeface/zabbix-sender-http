@@ -1,44 +1,42 @@
 package http
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
-	"zabbix-http/config"
-	"zabbix-http/internal/domain"
+	zabbix "zabbix-http/pkg/zabbix"
 )
 
 var required = []string{"server", "key", "value"}
 
-func RunServer(cfg *config.Config, zabbixSender domain.ZabbixSenderPort, logger domain.Logger) {
-	handler(zabbixSender, logger)
-	err := http.ListenAndServe(":"+cfg.HttpPort, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+func RunServer(ctx context.Context, port string, msgCh chan zabbix.Message, errCh chan error) {
+	server := &http.Server{Addr: ":" + port, Handler: handler(msgCh, errCh)}
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+	<-ctx.Done()
+	if err := server.Shutdown(ctx); err != nil {
+      errCh <- err
+    }
 }
 
-func handler(zabbixSender domain.ZabbixSenderPort, logger domain.Logger) {
-	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+func handler(msgCh chan zabbix.Message, errCh chan error) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
 		q := request.URL.Query()
 
 		for _, val := range required {
 			if _, ok := q[val]; !ok {
-				logger.Log(domain.INFO, fmt.Sprintf("request with empty parameter %v", val))
 				fmt.Fprintf(writer, "%v: shouldn t be empty \n", val)
 				return
 			}
 		}
-
-		response, err := zabbixSender.SendToZabbix(q["server"][0], q["key"][0], q["value"][0])
+		msgCh <- zabbix.CreateMessage(q["server"][0], q["key"][0], q["value"][0])
+		_, err := fmt.Fprintf(writer, "\"{\"status\": \"ok\"}")
 		if err != nil {
-			logger.Log(domain.ERROR, err.Error())
-			fmt.Fprintln(writer, "an error occurred while sending the request, see log for detail")
-			return
+			errCh <- err
 		}
-
-		writer.Header().Set("Content-Type", "application/json")
-		writer.Write(response)
-
-	})
+	}
 }

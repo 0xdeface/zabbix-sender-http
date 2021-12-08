@@ -1,5 +1,4 @@
-package connection
-
+package zabbix
 import (
 	"fmt"
 	"io/ioutil"
@@ -13,10 +12,10 @@ type Connection struct {
 	port   string
 }
 
-func CreateConnection(server string, port string) *Connection {
-	return &Connection{c: nil, server: server, port: port}
+func CreateConnection(server string, port string) Connection {
+	return Connection{c: nil, server: server, port: port}
 }
-func (c *Connection) getConnection() error {
+func (c *Connection) Open() error {
 	type DialResp struct {
 		Conn  net.Conn
 		Error error
@@ -40,7 +39,7 @@ func (c *Connection) getConnection() error {
 }
 
 func (c *Connection) Send(preparedPackage []byte) ([]byte, error) {
-	if err := c.getConnection(); err != nil {
+	if err := c.Open(); err != nil {
 		return nil, err
 	}
 	defer c.Close()
@@ -52,6 +51,8 @@ func (c *Connection) Send(preparedPackage []byte) ([]byte, error) {
 	return res, err
 
 }
+
 func (c *Connection) Close() error {
 	return c.c.Close()
 }
+

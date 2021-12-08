@@ -13,6 +13,7 @@ var header = []byte("ZBXD\x01")
 const HeaderLength = 5
 const DataLength = 8
 
+
 type Message struct {
 	Host  string `json:"host"`
 	Key   string `json:"key"`
@@ -76,3 +77,4 @@ func (zp *Packet) ResponseDecode(response []byte) []byte {
 	}
 	return response[HeaderLength+DataLength:]
 }
+
