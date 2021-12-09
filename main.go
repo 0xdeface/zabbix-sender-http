@@ -6,25 +6,26 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	configurator "zabbix-http/config"
+	"zabbix-http/config"
 	"zabbix-http/internal/http"
 	"zabbix-http/pkg/zabbix"
 )
 
 func main() {
-	config := configurator.GetConfig()
+	cfg := config.GetConfig()
 	errCh := make(chan error, 10)
-	zabbixSender := zabbix.NewZabbixSender(config.ServerAddr, config.ZabbixPort)
-	zabbixSender.SetErrChan(errCh)
+	zabbixSender := zabbix.NewZabbixSender(cfg.ServerAddr, cfg.ZabbixPort)
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	//ctx, cancel := context.WithTimeout(ctx, time.Second * 1)
 	go startZabbixSender(ctx, zabbixSender)
-	go startHttpServer(ctx, config.HttpPort, zabbixSender.MsgCh, errCh)
+	go startHttpServer(ctx, cfg.HttpPort, zabbixSender.MsgCh, errCh)
 	go func() {
 		for {
 			select {
 			case e := <-errCh:
+				fmt.Println(e)
+			case e := <-zabbixSender.ErrCh:
 				fmt.Println(e)
 			case <-ctx.Done():
 				return

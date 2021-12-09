@@ -19,8 +19,8 @@ func RunServer(ctx context.Context, port string, msgCh chan zabbix.Message, errC
 	}()
 	<-ctx.Done()
 	if err := server.Shutdown(ctx); err != nil {
-      errCh <- err
-    }
+		errCh <- err
+	}
 }
 
 func handler(msgCh chan zabbix.Message, errCh chan error) http.HandlerFunc {
@@ -29,7 +29,10 @@ func handler(msgCh chan zabbix.Message, errCh chan error) http.HandlerFunc {
 
 		for _, val := range required {
 			if _, ok := q[val]; !ok {
-				fmt.Fprintf(writer, "%v: shouldn t be empty \n", val)
+				_, err := fmt.Fprintf(writer, "%v: shouldn t be empty \n", val)
+				if err != nil {
+					errCh <- err
+				}
 				return
 			}
 		}
