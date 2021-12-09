@@ -1,0 +1,4 @@
+github.com/0xdeface/zabbix v1.0.0 h1:Ln57fuaPZOTa69arMp7VBqeDl+AZBaIEM4hVxiLhELc=
+github.com/0xdeface/zabbix v1.0.0/go.mod h1:OX4tWYXCh2yr/gj/A4wgFKlZ7XFIvzZoBqntJSkCTnk=
+github.com/0xdeface/zabbix-sender v0.9.0 h1:ZEHvf1ATNhIyBQeu8erWf/HQvSFhSd4Aly0mz5NW0X8=
+github.com/0xdeface/zabbix-sender v0.9.0/go.mod h1:mJzSB2lXXPU96lUHCWDg2YTIZ1vUUiGwmRUJkAD+tOY=

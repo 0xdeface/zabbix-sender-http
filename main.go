@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	zabbix "github.com/0xdeface/zabbix/sender"
 	"log"
 	"os"
 	"os/signal"
 	"zabbix-http/config"
 	"zabbix-http/internal/http"
-	"zabbix-http/pkg/zabbix"
 )
 
 func main() {

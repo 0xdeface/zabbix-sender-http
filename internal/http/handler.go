@@ -3,15 +3,17 @@ package http
 import (
 	"context"
 	"fmt"
+	zabbix "github.com/0xdeface/zabbix/sender"
 	"log"
 	"net/http"
-	zabbix "zabbix-http/pkg/zabbix"
 )
 
 var required = []string{"server", "key", "value"}
 
 func RunServer(ctx context.Context, port string, msgCh chan zabbix.Message, errCh chan error) {
+
 	server := &http.Server{Addr: ":" + port, Handler: handler(msgCh, errCh)}
+
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
 			log.Fatal(err)
