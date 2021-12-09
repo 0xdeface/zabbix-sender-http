@@ -6,7 +6,7 @@ zabbix-sender-http does not depend on the zabbix_sender tool and fully implement
 ![release](https://img.shields.io/github/v/release/0xdeface/zabbix-sender-http.svg)
 
 
-### builds: 
+### platform builds: 
 [windows_x64_build](dist/zabbix-http.exe)
 
 [linux_build](dist/zabbix-http)
