@@ -21,7 +21,7 @@ jobs:
     - name: for edut
       run: echo "just for test" >  edu.goma
     - name: Build
-      run: go build -v ./...
+      run: go build -o zabbix-agent
     - name: Log into registry ${{ env.REGISTRY }}
       uses: docker/login-action@v1
       with:
@@ -37,6 +37,14 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     - name: show files
       run: ls -lha
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            zabbix-agent
     - name: Build and Push Latest Docker Image
       id: build-and-push-latest
       uses: docker/build-push-action@v6
