@@ -47,6 +47,8 @@ jobs:
           title: "Development Build"
           files: |
             zabbix-http
+    - name: show files
+      run: ls
     - name: Build and Push Latest Docker Image
       id: build-and-push-latest
       uses: docker/build-push-action@v6
