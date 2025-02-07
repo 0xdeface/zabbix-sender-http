@@ -23,11 +23,6 @@ jobs:
       uses: docker/metadata-action@v5
       with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags:
-              type=ref,event=branch
-              type=ref,event=pr
-              type=semver,pattern={{version}}
-              type=semver,pattern={{major}}.{{minor}}
     - name: Build
       run: go build -ldflags "-X 'main.version=${{ steps.meta.outputs.tags }}'" -o zabbix-http
     - name: Log into registry ${{ env.REGISTRY }}
