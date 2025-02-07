@@ -27,7 +27,7 @@ To send data you should make http Get request with these query parameters: ["ser
     -e ZABBIX_HOST="zabbix-server-pgsql" \
     --restart always \
     --network postgres_network \
-    ghcr.io/0xdeface/zabbix-sender:latest
+    ghcr.io/0xdeface/zabbix-sender-http:latest
 ```
 
 ### launch parameters
