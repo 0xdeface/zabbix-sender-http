@@ -24,7 +24,7 @@ To send data you should make http Get request with these query parameters: ["ser
 ```bash
     docker run --name zabbix-sender-http -d \
     -p 3001:8080 \
-    -e ZABBIX_SERVER="zabbix-server-pgsql" \
+    -e ZABBIX_HOST="zabbix-server-pgsql" \
     --restart always \
     --network postgres_network \
     ghcr.io/0xdeface/zabbix-sender:latest
@@ -37,7 +37,7 @@ The table bellow shows possible launch parameters and their priority.
 | Highest priority  | Middle priority   | Lowest priority       | Description               | 
 |-------------------|-------------------|-----------------------|---------------------------|
 | **Cmd arguments** | **Env variables** | **Predefined values** |                       |   
-| --zabbix-host     | ZABBIX_host       | 127.0.0.1             | set zabbix server address |   
+| --zabbix-host     | ZABBIX_HOST       | 127.0.0.1             | set zabbix server address |   
 | --zabbix-port     | ZABBIX_PORT       | 10051                 | set zabbix server port    |   
 | --http-port       | HTTP_PORT         | 8080                  | http server port          |   
 

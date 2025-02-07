@@ -18,8 +18,18 @@ jobs:
       run: go test -v ./...
     - name: Vet
       run: go vet  ./...
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags:
+              type=ref,event=branch
+              type=ref,event=pr
+              type=semver,pattern={{version}}
+              type=semver,pattern={{major}}.{{minor}}
     - name: Build
-      run: go build -o zabbix-http
+      run: go build -ldflags "-X 'main.version=${{ steps.meta.outputs.tags }}'" -o zabbix-http
     - name: Log into registry ${{ env.REGISTRY }}
       uses: docker/login-action@v1
       with:
@@ -28,11 +38,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Setup Docker buildx
       uses: docker/setup-buildx-action@v3
-    - name: Extract Docker metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
     - name: show files
       run: ls -lha
     - uses: "marvinpinto/action-automatic-releases@latest"

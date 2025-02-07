@@ -11,10 +11,12 @@ import (
 	"zabbix-http/internal/http"
 )
 
+var version = ""
+
 func main() {
 	cfg := config.GetConfig()
 	if cfg.Debug {
-		fmt.Printf("\n App started with params:\n %+v\n", cfg)
+		fmt.Printf("\n App %v started with params:\n %+v\n", version, cfg)
 	}
 	errCh := make(chan error, 10)
 	zabbixSender := zabbix.NewZabbixSender(cfg.ZabbixHost, cfg.ZabbixPort)
