@@ -18,8 +18,6 @@ jobs:
       run: go test -v ./...
     - name: Vet
       run: go vet  ./...
-    - name: for edut
-      run: echo "just for test" >  edu.goma
     - name: Build
       run: go build -o zabbix-agent
     - name: Log into registry ${{ env.REGISTRY }}
