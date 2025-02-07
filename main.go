@@ -13,13 +13,15 @@ import (
 
 func main() {
 	cfg := config.GetConfig()
+	if cfg.Debug {
+		fmt.Printf("\n App started with params:\n %+v\n", cfg)
+	}
 	errCh := make(chan error, 10)
-	zabbixSender := zabbix.NewZabbixSender(cfg.ServerAddr, cfg.ZabbixPort)
+	zabbixSender := zabbix.NewZabbixSender(cfg.ZabbixHost, cfg.ZabbixPort)
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
-	//ctx, cancel := context.WithTimeout(ctx, time.Second * 1)
 	go startZabbixSender(ctx, zabbixSender)
-	go startHttpServer(ctx, cfg.HttpPort, zabbixSender.MsgCh, errCh)
+	go http.RunServer(ctx, cfg.HttpPort, zabbixSender.MsgCh, errCh, cfg.Debug)
 	go func() {
 		for {
 			select {
@@ -43,8 +45,4 @@ func startZabbixSender(ctx context.Context, s *zabbix.Sender) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-}
-
-func startHttpServer(ctx context.Context, port string, msgCh chan zabbix.Message, errCh chan error) {
-	http.RunServer(ctx, port, msgCh, errCh)
 }
