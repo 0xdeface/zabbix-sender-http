@@ -55,6 +55,5 @@ jobs:
         push: true
         build-args: |
           "APP_VERSION=${{ steps.short-sha.outputs.sha }}"
-          "ENTRYPOINT=entrypoint"
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         labels: ${{ steps.meta.outputs.labels }}
