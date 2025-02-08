@@ -3,9 +3,9 @@ ARG APP_VERSION="debug"
 ARG ENTRYPOINT="entrypoint"
 COPY . ./src
 WORKDIR src
-RUN echo $ENTRYPOINT
-RUN echo ${APP_VERSION}
 RUN go build  -ldflags "-X 'main.version=${APP_VERSION}'" -o ${ENTRYPOINT}
+RUN pwd
+RUN ls
 FROM scratch
 ARG APP_VERSION="debug"
 ARG ENTRYPOINT="entrypoint"
